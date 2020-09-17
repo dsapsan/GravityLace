@@ -4,29 +4,19 @@ namespace GravityLace
 {
     public class GravityMass : MonoBehaviour
     {
-        [SerializeField]
-        private double CurrentMass = default;
-        [SerializeField]
-        private Vector3 CurrentVelocity = default;
-
-        public double Mass => CurrentMass;
-
-        //To do: add double precision
-        public Vector3 Position { get; set; }
-        public Vector3 Velocity { get; set; }
+        [SerializeField] public double Mass = default;
+        [SerializeField] public Vector3d Position = default;
+        [SerializeField] public Vector3d Velocity = default;
 
         private void Awake()
         {
-            Position = transform.position / (float)GravitySystem.ScaleFactor;
-            Velocity = CurrentVelocity;
+            Position = Space.GetSpacePosition(transform.position);
             GravitySystem.Register(this);
         }
 
         private void Update()
         {
-            CurrentVelocity = Velocity;
-            Velocity = CurrentVelocity;
-            transform.position = Position * (float) GravitySystem.ScaleFactor;
+            transform.position = Space.GetPositionFromSpace(Position);
         }
 
         private void OnDestroy()
